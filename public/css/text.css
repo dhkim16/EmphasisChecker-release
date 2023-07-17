@@ -1,0 +1,86 @@
+#input-text {
+  width: 100%;
+  font-family:"Times New Roman", Times, serif;  
+  font-size: 15px;
+}
+
+mark[id^='sentence-'] {
+  background: transparent;
+  /* border-bottom: 2px dotted black; */
+}
+
+/*mark.highlight-default {
+  opacity: 0.5;
+}
+
+mark.highlight-emph {
+  opacity: 1.0;
+}
+
+mark.highlight-deemph {
+  opacity: 0.3;
+}
+
+mark.highlight-outfocus {
+  opacity: 0.1;
+}
+
+mark.highlight-hidden {
+  opacity: 0.0;
+} */
+
+span.fact-false {
+  text-decoration: red wavy underline !important;
+}
+
+span.unmatched {
+  text-decoration: blue wavy underline;
+}
+
+#text-container span.highlight-emph {
+  opacity: 1;
+}
+
+#text-container span.highlight-default {
+  opacity: 1;
+}
+
+#text-container span.highlight-deemph {
+  opacity: 0.15;
+}
+
+span.coloring-0 {
+  background: rgb(143, 187, 218);
+}
+
+span.coloring-1 {
+  background: rgb(230, 147, 148);
+}
+
+span.coloring-2 {
+  background: rgb(202, 179, 222);
+}
+
+span.coloring-3 {
+  background: rgb(198, 171, 165);
+}
+
+span.coloring-4 {
+  background: rgb(241, 187, 225);
+}
+
+span.coloring-5 {
+  background: rgb(191, 191, 191);
+}
+
+span.coloring-6 {
+  background: rgb(222, 222, 145);
+}
+
+span.coloring-7 {
+  background: rgb(139, 223, 231);
+}
+
+span.coloring-0-1 {
+  background: linear-gradient(rgb(143, 187, 218), rgb(230, 147, 148));
+}

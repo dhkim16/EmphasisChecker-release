@@ -1,0 +1,203 @@
+path.data-line {
+  fill: none;
+  stroke: black;
+  stroke-width: 1.5px;
+}
+
+/* Reserving orange for prominent */
+path.highlight-default, path.highlight-emph {
+  opacity: 1;
+}
+
+path.prominent-high, circle.prominent-high {
+  fill: rgb(255, 127, 14); /* original */
+  stroke: rgb(50, 50, 50); 
+  stroke-width: 0.5;
+}
+path.prominent-med, circle.prominent-med {
+  fill: rgb(255, 191, 135); /* 0.5 */
+  stroke: rgb(70, 70, 70); 
+  stroke-width: 0.5;
+}
+path.prominent-low, circle.prominent-low {
+  fill: rgb(255, 217, 183); /* 0.3 */
+  stroke: rgb(100, 100, 100); 
+  stroke-width: 0.5;
+}
+
+path.prominent-high.matched, circle.prominent-high.matched {
+  fill: rgb(44, 160, 44);
+}
+
+path.prominent-med.matched, circle.prominent-med.matched {
+  fill: rgb(150, 208, 150);
+}
+
+path.prominent-low.matched, circle.prominent-low.matched {
+  fill: rgb(192, 227, 192);
+}
+
+path.highlight-deemph, circle.highlight-deemph {
+  opacity: 0.1;
+}
+
+path.on-line {
+  fill: none !important;
+}
+
+path.on-line.prominent {
+  stroke-width: 7 !important;
+}
+
+path.on-line.prominent.matched {
+  stroke-width: 15 !important;
+}
+
+path.on-line.reference {
+  stroke-width: 7 !important;
+}
+
+path.on-line.prominent-high {
+  stroke: rgb(255, 127, 14);
+}
+
+path.on-line.prominent-med {
+  stroke: rgb(255, 191, 135);
+}
+
+path.on-line.prominent-low {
+  stroke: rgb(255, 217, 183);
+}
+
+path.on-line.prominent-high.matched {
+  stroke: rgb(44, 160, 44);
+}
+
+path.on-line.prominent-med.matched {
+  stroke: rgb(150, 208, 150);
+}
+
+path.on-line.prominent-low.matched {
+  stroke: rgb(192, 227, 192);
+}
+
+.on-line.highlight-emph {
+  visibility: visible;
+}
+
+.on-line.highlight-deemph, .on-line.highlight-default {
+  visibility: hidden;
+}
+
+path.coloring-0, path.coloring-1, path.coloring-2, path.coloring-3, path.coloring-4, path.coloring-5, path.coloring-6, path.coloring-7, path.coloring-8 {
+  stroke: rgb(50, 50, 50); 
+  stroke-width: 0.5;
+}
+
+path.coloring-0, circle.coloring-0 {
+  fill: rgb(31, 119, 180);
+}
+
+path.on-line.coloring-0 {
+  stroke: rgb(31, 119, 180);
+}
+
+path.coloring-1, circle.coloring-1 {
+  fill: rgb(214, 39, 40); /* original */ 
+}
+
+path.on-line.coloring-1 {
+  stroke: rgb(214, 39, 40);
+}
+
+path.coloring-2, circle.coloring-2 {
+  fill: rgb(148, 103, 189);
+}
+
+path.on-line.coloring-2 {
+  stroke: rgb(148, 103, 189);
+}
+
+path.coloring-3, circle.coloring-3 {
+  fill: rgb(140, 86, 75);
+}
+
+path.on-line.coloring-3 {
+  stroke: rgb(140, 86, 75);
+}
+
+path.coloring-4, circle.coloring-4 {
+  fill: rgb(227, 119, 194);
+}
+
+path.on-line.coloring-4 {
+  stroke: rgb(227, 119, 194);
+}
+
+path.coloring-5, circle.coloring-5 {
+  fill: rgb(127, 127, 127);
+}
+
+path.on-line.coloring-5 {
+  stroke: rgb(127, 127, 127);
+}
+
+path.coloring-6, circle.coloring-6 {
+  fill: rgb(188, 189, 34);
+}
+
+path.on-line.coloring-6 {
+  stroke: rgb(188, 189, 34);
+}
+
+path.coloring-7, circle.coloring-7 {
+  fill: rgb(23, 190, 207);
+}
+
+path.on-line.coloring-7 {
+  stroke: rgb(23, 190, 207);
+}
+
+path.invisible {
+  opacity: 0;
+}
+
+path.guide.line {
+  fill: none;
+  stroke-width: 0.5px;
+  stroke: rgb(100, 100, 100);
+  stroke-dasharray: 4;
+  opacity: 1 !important;
+}
+
+text.guide.highlight-default, text.guide.highlight-deemph, path.guide.highlight-deemph {
+  visibility: hidden;
+}
+
+text.guide.highlight-emph {
+  visibility: visible;
+}
+
+g.tick.hidden {
+  visibility: hidden;
+}
+
+text.guide {
+  font: 9px sans-serif;
+}
+
+text.guide.start {
+  text-anchor: middle;
+}
+
+text.guide.end {
+  text-anchor: middle;
+}
+
+text.guide.point {
+  text-anchor: middle;
+}
+
+text.ranking-text.highlight-deemph {
+  opacity: 0.1;
+}

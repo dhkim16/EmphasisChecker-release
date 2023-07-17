@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EmphasisChecker</title>
+
+    <script src="third-party/d3/d3.v7.min.js"></script>
+    <script src="third-party/jquery/jquery-3.6.0.min.js"></script>
+    <script src="third-party/jquery-highlighttextarea/jquery.highlighttextarea.min.js"></script>
+    <script src="third-party/rdp/rdp.js"></script>
+    <script src="third-party/noUiSlider/nouislider.min.js"></script>
+
+    <script src="js/prominent-feature-finder.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/options.js"></script>
+    <script src="js/controls.js"></script>
+    <script src="js/chart.js"></script>
+    <script src="js/text.js"></script>
+    <script src="js/python-requests.js"></script>
+    <script src="js/index.js"></script>
+
+    <link rel="stylesheet" href="third-party/jquery-highlighttextarea/jquery.highlighttextarea.min.css">
+    <link rel="stylesheet" href="third-party/noUiSlider/nouislider.min.css">
+    <link rel="stylesheet" href="css/switch.css">
+    <link rel="stylesheet" href="css/slider.css">
+    <link rel="stylesheet" href="css/chart.css">
+    <link rel="stylesheet" href="css/text.css">
+    <style media="screen">
+      body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
+      .message { background: white; max-width: 860px; margin: 16px auto 16px; padding: 24px 24px; border-radius: 3px; text-align: center;}
+      .message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
+      .message h3{ font-weight: 300; }
+      .message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
+      .message { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
+      #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
+      @media (max-width: 600px) {
+        body, .message { margin-top: 0; background: white; box-shadow: none; }
+        body { border-top: 16px solid #ffa100; }
+      }
+      #source {
+        width: 45%;
+        background-color: #c3dbe5;
+        padding: 10px;
+      }
+      #target {
+        width: 45%;
+        background-color: #ffd1a0;
+        padding: 10px;
+        vertical-align: top;
+      }
+      .feature-elem {
+        width: 90%;
+        background-color:whitesmoke;
+        padding: 10px;
+        margin: 3px;
+        border: solid rgba(0,0,0,0.2);
+      }
+      .emph-block {
+        font-weight: bold;
+      }
+      th {
+        font-size: 20px;
+      }
+      #chart-width-slider-container {
+        width: 600px;
+        height: 10px;
+      }
+      #chart-width-slider-container .c-0-color {
+        background: #c0392b;
+      }
+      #chart-width-slider-container .noUi-handle {
+        height: 18px;
+        width: 18px;
+        top: -5px;
+        right: -9px;
+        border-radius: 9px;
+      }
+
+      #chart-width-slider-container .noUi-handle:after, #chart-width-slider-container .noUi-handle:before {
+        display: none;
+      }
+
+      #chart-height-slider-container {
+        width: 10px;
+        height: 600px;
+        margin-left:20px;
+      }
+      #chart-height-slider-container .c-0-color {
+        background: #c0392b;
+      }
+      #chart-height-slider-container .noUi-handle {
+        height: 18px;
+        width: 18px;
+        border-radius: 9px;
+      }
+
+      #chart-height-slider-container .noUi-handle:after, #chart-height-slider-container .noUi-handle:before {
+        display: none;
+      }
+
+      #time-range-slider-container {
+        width: 600px;
+        height: 10px;
+      }
+
+      #time-range-slider-container .noUi-connect {
+        background: #c0392b;
+      }
+      #time-range-slider-container .noUi-handle {
+        height: 18px;
+        width: 18px;
+        top: -5px;
+        right: -9px;
+        border-radius: 9px;
+      }
+
+      #time-range-slider-container .noUi-handle:after, #time-range-slider-container .noUi-handle:before {
+        display: none;
+      }
+
+      #value-range-slider-container {
+        width: 10px;
+        height: 600px;
+        margin-left: 20px;
+      }
+
+      #value-range-slider-container .noUi-connect {
+        background: #c0392b;
+      }
+      #value-range-slider-container .noUi-handle {
+        height: 18px;
+        width: 18px;
+        border-radius: 9px;
+      }
+
+      #value-range-slider-container .noUi-handle:after, #value-range-slider-container .noUi-handle:before {
+        display: none;
+      }
+
+      #ui-table, #ui-table td {
+        padding: 0px;
+        margin: 0px;
+        border: 0px;
+      }
+      div.noUi-tooltip {
+        font-size: 13px;
+      }
+
+      #drop-zone {
+        border: 2px dashed #ccc;
+        padding: 20px;
+        text-align: center;
+      }
+
+      #drop-zone.drag-over {
+        background-color: #f0f0f0;
+      }
+      .tooltip {
+        position: relative;
+        display: inline-block;
+      }
+
+      .tooltip .tooltip-text {
+        visibility: hidden;
+        width: 120px;
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -60px;
+      }
+
+      .tooltip:hover .tooltip-text {
+        visibility: visible;
+      }
+
+      .submit-button {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;
+      }
+
+      #chart-number {
+        padding: 0.5em;
+        font-size: 1em;
+        border-radius: 0.3em;
+        background-color: #f7f7f7;
+        color: #333;
+        box-shadow: none;
+      }
+
+      #chart-number:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px #0077ff;
+      }
+
+      #post-task {
+        text-align: left;
+        display: none;
+      }
+
+      .answer-slot {
+        width: 100%;
+        font-family:"Times New Roman", Times, serif;  
+        font-size: 15px;
+      }
+
+    /* The switch - the box around the slider */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+    }
+
+    /* Hide default HTML checkbox */
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    /* The slider */
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+
+    input:checked + .slider {
+      background-color: #2196F3;
+    }
+
+    input:focus + .slider {
+      box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked + .slider:before {
+      -webkit-transform: translateX(26px);
+      -ms-transform: translateX(26px);
+      transform: translateX(26px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+      height: 34px;
+      border-radius: 34px;
+    }
+
+    .slider.round:before {
+      border-radius: 50%;
+    }
+
+    </style>
+  </head>
+  <body>
+    <div id="main-task" class="message">
+      <div style="width:100%; text-align:left;">
+        <h2>EmphasisChecker</h2>
+      <hr/><br/>
+      </div>
+      <div id="toggle-container">
+        <table id="upload-container" style="width: 100%;">
+          <tbody>
+            <tr>
+              <td style="vertical-align: top;">
+                Choose one of the default charts: <br/><br/><br/>
+                <select name="chart-number" id="chart-number" onchange="javascript:fetchDataMetadata();">
+                  <option value="013" selected="selected"></option>
+                  <option value="000">Google searches for 'unemployment'</option>
+                  <option value="001">US unauthorized immigrants</option>
+                  <option value="002">Number of ICE arrests</option>
+                  <option value="003">% US voters who are Latino</option>
+                  <option value="004">US COVID-19 Cases</option>
+                  <option value="005">Employment-Population Ratio</option>
+                  <option value="006">% democrats viewing climate change as threat</option>
+                  <option value="007">Macron's Approval Rating</option>
+                  <option value="009">Public debt as percentage of GDP</option>
+                  <option value="010">Inbound Tourists in Japan</option>
+                  <option value="011">Chinese Yuan / US Dollar exchange rate</option>
+                  <option value="012">30-year fixed mortgage rates</option>
+                  <option value="013">Real home price index</option>
+                  <option value="014">Median single-family home prices in King County</option>
+                  <option value="015">Weekly US field production of crude oil</option>
+                  <option value="016">North Korea's GDP per capita</option>
+                </select>
+              </td>
+              <td style="width:50px;">
+                OR
+              </td>
+              <td style="vertical-align: top;">
+                Upload your own data:<br/><br/>
+                <div id="drop-zone" onclick="document.getElementById('data-file-upload').click();" style="user-select: none; font-size: 13px;">
+                  Drop your data file here (.csv)<br/>
+                  <span style="font-size: 15px;">OR</span><br/>
+                  Click here to upload your data file
+                  <input type="file" id="data-file-upload" style="display: none;" accept=".csv" onchange="javascript:uploadData(event);" hidden/>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <br/><br/>
+        <div style="width:100%; text-align: left;">
+          Note: If you are uploading your own data, please ensure that the file is in the right format.
+          The file should be in a CSV format with the first column named "Date" and the second column giving the description of the values.
+          The first column should include dates of the form "YYYY-MM-DD" and the second column should include the either integers or decimals.
+          <br/><br/>
+          If you see nothing happening for a while, it means that the file is not in the right format.
+          Please reformat your data or use one of the provided data if you run into this issue.      
+        </div>
+      </div>
+      <div>
+        <div id="toggle-panel" style="display:none;">
+          <table>
+            <tbody>
+              <tr>
+                <td style="width: 200px;text-align: right;">
+                  Chart edit mode:
+                </td>
+                <td id="chart-edit-container" style="width:200px;text-align:left;">
+                  <label class="switch">
+                    <input type="checkbox" id="chart-edit-mode" onchange="javascript:toggleChartEditMode();">
+                    <span class="slider round"></span>
+                  </label>
+                </td>
+                <td id="slider2-header" style="width: 200px;text-align: right;">
+                  Emphasis display mode:
+                </td>
+                <td id="slider2-slider" style="width:200px;text-align: left;">
+                  <label class="switch">
+                    <input type="checkbox" id="ec-display-mode" onchange="javascript:toggleEmphasisDisplayMode();" checked>
+                    <span class="slider round"></span>
+                  </label>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <table id="ui-table" style="display:none;">
+          <tbody>
+            <tr>
+              <td style="font-size:13px; height: 170px; width: 50px; vertical-align: bottom; padding-bottom: 10px;">
+                <div class="tooltip">
+                  <img id="value-out-of-range-warning" src="icons/error/icons8-error-96.png" style="width: 30px;display: none;"/>
+                  <span class="tooltip-text">Data points outside of the given value range!</span>
+                </div>
+                <br/>
+                Value<br/>Range
+              </td>
+              <td style="font-size:13px; height: 170px; width: 50px; vertical-align: bottom; padding-bottom: 10px;">                
+                Chart<br/>Height
+              </td>
+              <td id="edit-mode-chart-location" rowspan="2" colspan="3" style="text-align: left; width:720px;vertical-align: top;">
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 50px;height: 675px; vertical-align: top;">
+                <div id="value-range-slider-container"></div>
+              </td>
+              <td style="width: 50px; height: 675px; vertical-align: top;">
+                <div id="chart-height-slider-container"></div>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="3" style="font-size:13px; width:190px; padding-right: 20px; text-align: right;">
+                Chart Width
+              </td>
+              <td style="width: 600px;">
+                <div id="chart-width-slider-container"></div>
+              </td>
+              <td style="width:30px;"></td>
+            </tr>
+            <tr>
+              <td colspan="5" style="height:20px">&nbsp;</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td style="height:30px">
+                <div class="tooltip" style="float: right;font-size: 13px;">
+                  <img id="time-range-empty-warning" src="icons/error/icons8-error-96.png" style="width: 27px;"/>
+                  <span class="tooltip-text">Time range does not include sufficient points!</span>
+                </div>
+              </td>
+              <td style="font-size: 13px;">
+                Time Range
+              </td>
+              <td style="width: 600px;">
+                <div id="time-range-slider-container"></div>
+              </td>
+              <td style="width:30px;"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <br/><br/>
+      <div id="view-mode-chart-location" style="display: none;">
+        <div id="chart-container" style="text-align: center;"></div>
+      </div>
+      <div id="text-container" style="display:none;">
+        <textarea id="input-text" rows="10" placeholder="Enter text about the chart..."></textarea>
+      </div>
+    </div>
+  </body>
+</html>
