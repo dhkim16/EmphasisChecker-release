@@ -1,6 +1,6 @@
 # EmphasisChecker
 
-This repository includes code for the EmphasisChecker tool presented in *EmphasisChecker: A tool for Guiding Chart and Caption Emphasis* (IEEE VIS 2023 submission).
+This repository includes code for the EmphasisChecker tool presented in *EmphasisChecker: A Tool for Guiding Chart and Caption Emphasis* (IEEE VIS 2023 (to appear)).
 
 ## Running the Code
 
